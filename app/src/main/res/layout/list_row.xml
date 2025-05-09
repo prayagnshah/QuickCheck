@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    xmlns:andriod="http://schemas.android.com/tools"
+    android:padding="15sp">
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/name"
+        android:layout_marginBottom="5sp"
+        android:textColor="#A9E0F4"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox"
+        android:layout_marginEnd="5dp"
+        android:tooltipText="Mark as Completed" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40sp"
+        android:textColor="#000"
+        android:textSize="20sp" />
+
+    <!-- Spacer pushes the next views to the right -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    
+<!--    We will create the image views for the delete and duplicate button-->
+    <ImageView
+        android:layout_width="22sp"
+        android:layout_height="22sp"
+        android:id="@+id/copy"
+        android:layout_marginEnd="18sp"
+        android:src="@drawable/copy"/>
+
+    <ImageView
+        android:layout_width="22sp"
+        android:layout_height="22sp"
+        android:id="@+id/remove"
+        android:layout_marginEnd="18sp"
+        android:src="@drawable/remove" />
+
+
+</LinearLayout>

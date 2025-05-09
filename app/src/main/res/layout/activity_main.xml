@@ -1,0 +1,42 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:id="@+id/header"
+        android:background="#F1FEFF" >
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:autofillHints="Enter Item here"
+            android:layout_centerInParent="true"
+            android:id="@+id/input"
+            />
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_toEndOf="@id/input"
+            android:id="@+id/add"
+            android:layout_marginStart="7dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/grocery_image"
+            />
+
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+        android:layout_below="@+id/header" />  <!-- We want the list below the header-->
+
+    </RelativeLayout>
