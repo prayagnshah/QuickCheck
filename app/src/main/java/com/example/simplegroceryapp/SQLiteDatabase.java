@@ -1,0 +1,91 @@
+package com.example.simplegroceryapp;
+
+// We will use this file to create the database and define the database schema so that this helper can be used anywhere in the different activity.
+// Database query, create database and everything should be done in this file.
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+
+// This public class requires two parameters - onCreate and onUpgrade
+public class SQLiteDatabase extends SQLiteOpenHelper {
+
+    // Assigning the name of database as a private constant variable because we do not want anyone to override this name
+    // static means that memory has already been allocated to the variable
+    private static final String DATABASE_NAME = "GroceryList.db";
+    private static final int DATABASE_ID = 1;
+    private static final String TABLE_NAME = "grocery_list";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_ITEM_NAME = "item_name";
+    private static final String COLUMN_NOTES = "notes";
+    private static final String COLUMN_IS_CHECKED = "is_checked";
+
+
+    // We will only keep the context and then remove other parameters as we will hardcode them
+    public SQLiteDatabase(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_ID);
+    }
+
+    // After creating two parameters it also requires a constructor which means the context of our MainActivity
+    // This constructor will be used to create the database and this will stay as it is and data will be added, removed, updated unless and until users do clear cache and data from their phone.
+
+    @Override
+    public void onCreate(android.database.sqlite.SQLiteDatabase db) {
+
+        // We will create table now
+        // CREATE TABLE IF NOT EXISTS grocery_list (id INTEGER PRIMARY KEY AUTOINCREMENT, item_name TEXT, notes TEXT, is_checked INTEGER)
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_ITEM_NAME + " TEXT," + COLUMN_NOTES + " TEXT," + COLUMN_IS_CHECKED + " INTEGER" + ")");
+
+    }
+
+    // This method is used to upgrade the database when the version number is changed
+    // Any changes in schema or structure of the database will be done here
+    @Override
+    public void onUpgrade(android.database.sqlite.SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+
+        // Calling onCreate method to create the table again with new schema in future.
+        onCreate(db);
+
+    }
+
+    // This method will be used to insert new grocery item
+    public void insertItem(String itemName, String notes, int isChecked) {
+        android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_ITEM_NAME + ", " + COLUMN_NOTES + ", " + COLUMN_IS_CHECKED + ") VALUES (?, ?, ?)";
+        db.execSQL(sql, new Object[]{itemName, notes, isChecked});
+        db.close();
+    }
+
+    // This method will be used to delete the grocery item
+    public void deleteItem(int id) {
+        android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?";
+        db.execSQL(sql, new Object[]{id});
+        db.close();
+    }
+
+    // This method will be used to retrieve all the grocery items
+    public ArrayList<String> getAllItems(){
+        ArrayList<String> items = new ArrayList<>();
+        android.database.sqlite.SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME;
+        Cursor cursor = db.rawQuery(sql, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String itemName = cursor.getString(0);
+                items.add(itemName);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return items;
+    }
+}
