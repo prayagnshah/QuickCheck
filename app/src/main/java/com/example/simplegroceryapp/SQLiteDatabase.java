@@ -3,6 +3,7 @@ package com.example.simplegroceryapp;
 // We will use this file to create the database and define the database schema so that this helper can be used anywhere in the different activity.
 // Database query, create database and everything should be done in this file.
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -56,10 +57,14 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
     }
 
     // This method will be used to insert new grocery item
-    public void insertItem(String itemName, String notes, int isChecked) {
+    public void insertItem(String itemName) {
         android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_ITEM_NAME + ", " + COLUMN_NOTES + ", " + COLUMN_IS_CHECKED + ") VALUES (?, ?, ?)";
-        db.execSQL(sql, new Object[]{itemName, notes, isChecked});
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ITEM_NAME, itemName);
+        values.put(COLUMN_NOTES, ""); // Default value for notes
+        values.put(COLUMN_IS_CHECKED, 0); // Default value for is_checked
+
+        db.insert(TABLE_NAME, null, values);
         db.close();
     }
 
@@ -75,17 +80,25 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
     public ArrayList<String> getAllItems(){
         ArrayList<String> items = new ArrayList<>();
         android.database.sqlite.SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM " + TABLE_NAME;
-        Cursor cursor = db.rawQuery(sql, null);
+//        String sql = "SELECT * FROM " + TABLE_NAME;
+
+//        Cursor cursor = db.rawQuery(sql, null);
+        Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_ITEM_NAME}, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
-                String itemName = cursor.getString(0);
+                String itemName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ITEM_NAME));
                 items.add(itemName);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return items;
+    }
+
+    public void deleteItemByName(String name) {
+        android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, COLUMN_ITEM_NAME + "=?", new String[]{name});
+        db.close();
     }
 }
