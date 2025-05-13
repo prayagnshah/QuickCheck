@@ -2,9 +2,13 @@ package com.example.simplegroceryapp;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +28,7 @@ public class NotesActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -35,8 +40,19 @@ public class NotesActivity extends AppCompatActivity {
         // Adding this toast message to show the notes activity is opened
         Toast.makeText(this, "Notes for " + s, Toast.LENGTH_SHORT).show();
 
-        // When using Intent to open a new activity, you need to create an Intent object,
-        // Intent requires two parameters: the current context and the class of the activity you want to open.
+        // Initializing ids when NotesActivity page is opened
+        EditText editText = findViewById(R.id.textView);
+        Button save_button = findViewById(R.id.save_button);
+        Button back_button = findViewById(R.id.back_button);
+
+
+        // Setting the editText to the item name passed from the ListViewAdapter
+//        editText.setText("Enter notes for the item" , TextView.BufferType.valueOf(s));
+
+        // Once clicked on back button should bring it back to the main activity
+        back_button.setOnClickListener(v -> {
+            finish(); // Close the NotesActivity and return to the previous activity
+        });
 
 
 
