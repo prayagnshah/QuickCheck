@@ -1,7 +1,10 @@
 package com.example.simplegroceryapp;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +53,7 @@ public class ListViewAdapter extends ArrayAdapter<String> {
             holder.copy = convertView.findViewById(R.id.copy);
             holder.remove = convertView.findViewById(R.id.remove);
             holder.checkBox = convertView.findViewById(R.id.checkBox);
+            holder.notes_view = convertView.findViewById(R.id.notes_view);
 
             convertView.setTag(holder);
         } else {
@@ -74,6 +78,15 @@ public class ListViewAdapter extends ArrayAdapter<String> {
             }
         });
 
+        // Clicking on the notes icon will open the notes activity.java file where user can enter their notes for their item
+        holder.notes_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // We are directly sending it to the notes activity java class after clicking the button
+                NotesActivity.openNotesActivity(context, list.get(position));
+            }
+        });
+
         return convertView;
     }
 
@@ -84,5 +97,6 @@ public class ListViewAdapter extends ArrayAdapter<String> {
         CheckBox checkBox;
         ImageView copy;
         ImageView remove;
+        ImageView notes_view;
     }
 }
