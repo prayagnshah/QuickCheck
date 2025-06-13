@@ -41,9 +41,33 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     static ListViewAdapter adapter;   // This is used to properly display the items inside ListView
 
+
 //    We will call the EditView from the activity_main.xml file to set the logic
     EditText input;  // a text field to enter the item
     ImageView enter;  // image of check mark to add the item
+
+
+    // Adding this override method to show the settings menu of the app on the top right corner of the app
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    // In future, if I want to include the functionality that if anything is clicked and it will take it to the next page then below option will be required.
+    // I am just commenting it out for now and not deleting it.
+//    @Override
+//    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if (id == R.id.version_number) {
+//            makeToast("Settings clicked");
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,4 +187,5 @@ public class MainActivity extends AppCompatActivity {
         t.show();
 
     }
+
 }
