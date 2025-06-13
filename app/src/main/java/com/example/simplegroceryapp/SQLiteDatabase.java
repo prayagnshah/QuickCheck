@@ -102,6 +102,7 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Method to update the notes for a specific item name
     public void updateNotes(String itemName, String notes) {
         android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -110,15 +111,45 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Method to get notes for a specific item name
     public String getNotes(String itemName) {
         android.database.sqlite.SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_NOTES}, COLUMN_ITEM_NAME + "=?", new String[]{itemName}, null, null, null);
         String notes = "";
+
+        // This checks that if the query at least returns one result if not then notes will be empty
+        // This is same for all the functions which I am doing below
         if (cursor.moveToFirst()) {
             notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES));
         }
+
+        // Always close this to free up resources and avoid data leaks
         cursor.close();
         db.close();
         return notes;
+    }
+
+    // Method to update checkbox state
+    public void updateCheckboxState(String itemName, boolean isChecked) {
+        android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IS_CHECKED, isChecked ? 1 : 0);
+        db.update(TABLE_NAME, values, COLUMN_ITEM_NAME + "=?", new String[]{itemName});
+        db.close();
+    }
+
+    // Method to get checkbox state
+    public boolean getCheckboxState(String itemName) {
+        android.database.sqlite.SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_IS_CHECKED}, COLUMN_ITEM_NAME + "=?", new String[]{itemName}, null, null, null);
+        boolean isChecked = false;
+        if (cursor.moveToFirst()) {
+            int isCheckedInt = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_CHECKED));
+            isChecked = isCheckedInt == 1;
+        }
+
+        cursor.close();
+        db.close();
+        return isChecked;
     }
 }

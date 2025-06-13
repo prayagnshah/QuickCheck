@@ -27,11 +27,13 @@ public class ListViewAdapter extends ArrayAdapter<String> {
 
     // context is the abstract class that provides access to system-level resources like it will handle global level information about the app's environment.
     Context context;
+    private final SQLiteDatabase dbHelper;
 
     public ListViewAdapter(Context context, ArrayList<String> items) {
         super(context, R.layout.list_row, items);
         this.context = context;
         this.list = items;
+        this.dbHelper = new SQLiteDatabase(context);  // Initialize the database helper to get the values from the database
     }
 
     @SuppressLint("SetTextI18n")
@@ -60,9 +62,22 @@ public class ListViewAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        // Get the current item name from the list
+        String currentItem = list.get(position);
+
         // Always update these views, regardless of whether convertView was null
         holder.number.setText((position + 1) + ".");
         holder.name.setText(list.get(position));
+
+        // Set the checkbox state based on the item's checkbox state from database
+        holder.checkBox.setChecked(dbHelper.getCheckboxState(currentItem));
+
+        // Set checkbox listener to update the database when the checkbox state changes
+        holder.checkBox.setOnClickListener(v -> {
+            boolean isChecked = holder.checkBox.isChecked();
+            dbHelper.updateCheckboxState(currentItem, isChecked);
+        });
+
 
         holder.copy.setOnClickListener(new View.OnClickListener() {
             @Override
