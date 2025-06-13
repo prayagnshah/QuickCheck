@@ -17,7 +17,7 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
 
     // Assigning the name of database as a private constant variable because we do not want anyone to override this name
     // static means that memory has already been allocated to the variable
-    private static final String DATABASE_NAME = "GroceryList.db";
+    private static final String DATABASE_NAME = "grocery_database";
     private static final int DATABASE_ID = 1;
     private static final String TABLE_NAME = "grocery_list";
     private static final String COLUMN_ID = "id";
@@ -100,5 +100,25 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
         android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_ITEM_NAME + "=?", new String[]{name});
         db.close();
+    }
+
+    public void updateNotes(String itemName, String notes) {
+        android.database.sqlite.SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTES, notes);
+        db.update(TABLE_NAME, values, COLUMN_ITEM_NAME + "=?", new String[]{itemName});
+        db.close();
+    }
+
+    public String getNotes(String itemName) {
+        android.database.sqlite.SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_NOTES}, COLUMN_ITEM_NAME + "=?", new String[]{itemName}, null, null, null);
+        String notes = "";
+        if (cursor.moveToFirst()) {
+            notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES));
+        }
+        cursor.close();
+        db.close();
+        return notes;
     }
 }

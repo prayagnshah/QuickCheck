@@ -8,8 +8,8 @@
     <EditText
         android:id="@+id/textView"
         style="@style/Widget.AppCompat.EditText"
-        android:layout_width="380dp"
-        android:layout_height="520dp"
+        android:layout_width="339dp"
+        android:layout_height="505dp"
         android:layout_marginBottom="100dp"
         android:autoSizeTextType="uniform"
         android:autofillHints="Enter any notes for your item"
