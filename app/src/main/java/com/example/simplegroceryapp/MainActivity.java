@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -119,21 +121,42 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //      This onclick listener means that when user clicks on text field then it just add the values
-        enter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        enter.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String text = input.getText().toString().trim();
+////                Need to check that text is valid or not
+//                if(text.isEmpty()){
+//                    makeToast("Enter valid item");
+//                }else {
+//                    addItem(text);
+//                    input.setText("");  // Clear the text after adding
+//                    makeToast("Added " + text);
+//                }
+//
+//
+//            }
+//        });
+        // Adding this will add the item into the list by just pressing Enter key on the keyboard or the enter key on the mobile phone.
+        // To activate this option then ime option in activity_main.xml should be set to actionDone
+
+        input.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    actionId == EditorInfo.IME_ACTION_GO ||
+                    actionId == EditorInfo.IME_ACTION_NEXT ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+
                 String text = input.getText().toString().trim();
-//                Need to check that text is valid or not
-                if(text.isEmpty()){
+                if (text.isEmpty()) {
                     makeToast("Enter valid item");
-                }else {
+                } else {
                     addItem(text);
                     input.setText("");  // Clear the text after adding
                     makeToast("Added " + text);
                 }
-
-
+                return true;
             }
+            return false;
         });
 
         loadContent();
@@ -152,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 //    Just having public void then we will not be able to call them in another java class instead we need add public static void and then we can use them in ListViewAdapter java class
-//    We also need to make the variable statc like items, listView
+//    We also need to make the variable static like items, listView
 // These are also known as helper functions add, remove and makeToast
     public static void addItem(String item){
         items.add(item);
