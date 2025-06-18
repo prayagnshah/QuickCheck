@@ -14,12 +14,17 @@
         tools:icon="@drawable/mr_button_light" />
     <item
         android:id="@+id/instructions_1"
-        android:title="Long Press on box to delete"
+        android:title="Long Press on item to delete"
         app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
         tools:icon="@drawable/mr_button_light" />
     <item
         android:id="@+id/instructions_2"
         android:title="Write anything in notes as you like"
+        app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
+        tools:icon="@drawable/mr_button_light" />
+    <item
+        android:id="@+id/instructions_3"
+        android:title="Tap the orange icon to copy item"
         app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
         tools:icon="@drawable/mr_button_light" />
 </menu>
